@@ -18,20 +18,13 @@ class OutboundFlightsFragment : FlightsBaseFragment() {
             state?.let {
                 when (state) {
                     is LoadingState -> {
-                        progressBar.visibility = View.VISIBLE
-                        emptyList.visibility = View.GONE
+                        loadingConfig()
                     }
                     is SuccessState -> {
-                        progressBar.visibility = View.GONE
-                        if (state.flights.outboundFlightModel.isEmpty())
-                            emptyList.visibility = View.VISIBLE
-                        else
-                            emptyList.visibility = View.GONE
-                        adapter.update(state.flights.outboundFlightModel)
+                        successConfig(state.flights.outboundFlightModel)
                     }
                     is ErrorState -> {
-                        progressBar.visibility = View.GONE
-                        emptyList.visibility = View.VISIBLE
+                        errorConfig()
                     }
                 }
             }
@@ -41,17 +34,12 @@ class OutboundFlightsFragment : FlightsBaseFragment() {
             state?.let {
                 when (state) {
                     is LoadingState -> {
-                        progressBar.visibility = View.VISIBLE
-                        emptyList.visibility = View.GONE
+                        loadingConfig()
                     }
                     is SuccessState -> {
-                        progressBar.visibility = View.GONE
-                        if (state.flights.outboundFlightModel.isEmpty())
-                            emptyList.visibility = View.VISIBLE
-                        else
-                            emptyList.visibility = View.GONE
-                        adapter.update(state.flights.outboundFlightModel)
+                        successConfig(state.flights.outboundFlightModel)
                     }
+
                 }
             }
         })
