@@ -41,6 +41,7 @@
 
     <TextView
         android:id="@+id/numberOfFlights"
+        android:background="@color/grayNurse"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="@string/voos"
