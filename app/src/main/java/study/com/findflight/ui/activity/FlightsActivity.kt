@@ -3,7 +3,6 @@ package study.com.findflight.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
@@ -12,7 +11,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import study.com.findflight.R
 import study.com.findflight.ui.ErrorState
 import study.com.findflight.ui.NumberStopsQuery
-import study.com.findflight.ui.PartsDayQuery
+import study.com.findflight.ui.PeriodDayQuery
 import study.com.findflight.ui.SuccessState
 import study.com.findflight.ui.adapter.ViewPagerAdapter
 import study.com.findflight.ui.fragment.InboundFlightsFragment
@@ -51,23 +50,23 @@ class FlightsActivity : AppCompatActivity() {
     private fun configureListenerFAB() {
         fabFilter.setOnClickListener {
             val i = Intent(this, QueryFlightsActivity::class.java)
+            i.putExtra(PERIODS_OF_THE_DAY, periodsDay)
+            i.putExtra(NUMBER_OF_STOPS, numberStops)
             startActivityForResult(i, QUERY_CODE)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
+        when (resultCode) {
             1 -> {
-                val partsDay: List<String> =
-                    data?.getStringArrayListExtra(PARTS_DAY) ?: emptyList()
-                val numberStops: List<Int> =
-                    data?.getIntegerArrayListExtra(NUMBER_STOP) ?: emptyList()
+                periodsDay = data?.getStringExtra(PERIODS_OF_THE_DAY) ?: ""
+                numberStops = data?.getStringExtra(NUMBER_OF_STOPS) ?: ""
 
                 viewModel.searchFlightByQuery(
                     Pair(
-                        PartsDayQuery(partsDay),
-                        NumberStopsQuery(numberStops)
+                        PeriodDayQuery(periodsDay.split("/")),
+                        NumberStopsQuery(numberStops.split("/"))
                     )
                 )
             }
@@ -99,10 +98,13 @@ class FlightsActivity : AppCompatActivity() {
         tabs.setupWithViewPager(viewPager)
     }
 
+    private var periodsDay: String = ""
+    private var numberStops: String = ""
+
 }
 
 const val SORT_CODE = 2
 const val QUERY_CODE = 1
 
-const val PARTS_DAY = "partsDay"
-const val NUMBER_STOP = "numberStops"
+const val PERIODS_OF_THE_DAY = "PERIODS_OF_THE_DAY"
+const val NUMBER_OF_STOPS = "NUMBER_OF_STOPS"
