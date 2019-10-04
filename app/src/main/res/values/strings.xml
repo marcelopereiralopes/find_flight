@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Find Flight</string>
+    <string name="indisponivel">Lista de Voos Indisponível.</string>
+    <string name="retentar">Retentar</string>
+    <string name="ida">VOO DE IDA</string>
+    <string name="volta">VOO DE VOLTA</string>
+    <string name="voos">VOOS</string>
+    <string name="filtro">FILTRO</string>
+    <string name="ordenacao">ORDENAÇÃO</string>
+    <string name="filtros">FILTROS</string>
+    <string name="filtrar_horario">Filtrar por Horário</string>
+    <string name="filtrar_paradas">Filtrar por Paradas</string>
+    <string name="manha">MANHÃ - 06:00 às 11:59</string>
+    <string name="tarde">TARDE - 12:00 às 17:59</string>
+    <string name="noite">NOITE - 18:00 às 23:59</string>
+    <string name="madrugada">MADRUGADA - 00:00 às 05:59</string>
+    <string name="voo_direto">VOO DIRETO</string>
+    <string name="uma_parada">1 PARADA</string>
+    <string name="aplicar_filtro">Aplicar filtro</string>
+    <string name="cnf">CNF</string>
+    <string name="gru">GRU</string>
+    <string name="_144_50">144,50</string>
+    <string name="_13_30">13:30</string>
+    <string name="comprar">Comprar</string>
+    <string name="_1h30_1_parada">1h30, 1 parada</string>
+    <string name="valor_total_c_taxas">Valor total c/ taxas</string>
+    <string name="nenhum_voo_encontrado">Nenhum voo encontrado :(</string>
+</resources>
