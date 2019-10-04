@@ -11,18 +11,16 @@ import study.com.findflight.util.Converter
 
 
 class FlightsAdapter(
-    private val flights: MutableList<FlightModel> = mutableListOf(),
-    private var listener: (FlightModel) -> Unit = {}
-) : RecyclerView.Adapter<FlightsAdapter.FlightViewHolder>() {
+    private val flights: MutableList<FlightModel> = mutableListOf()) : RecyclerView.Adapter<FlightsAdapter.FlightViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = FlightViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.flight_item, null)
+        LayoutInflater.from(parent.context).inflate(R.layout.flight_item, parent,false)
     )
 
     override fun getItemCount() = flights.size
 
     override fun onBindViewHolder(holder: FlightViewHolder, position: Int) {
-        holder.bind(flights[position], listener)
+        holder.bind(flights[position])
     }
 
     fun update(flights: List<FlightModel>) {
@@ -36,7 +34,7 @@ class FlightsAdapter(
     inner class FlightViewHolder(private val flightView: View) :
         RecyclerView.ViewHolder(flightView) {
 
-        fun bind(flight: FlightModel, listener: (FlightModel) -> Unit) = with(flightView) {
+        fun bind(flight: FlightModel) = with(flightView) {
             from.text = flight.from
             to.text = flight.to
             value.text = flight.value.toString()
@@ -48,7 +46,6 @@ class FlightsAdapter(
                     flight.arrival
                 ) + ", ${flight.stops} parada"
             timeAndNumberStops.text = timeAndStopText
-            setOnClickListener { listener(flight) }
         }
 
     }
