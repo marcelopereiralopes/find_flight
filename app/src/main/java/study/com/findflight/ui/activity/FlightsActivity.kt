@@ -3,8 +3,7 @@ package study.com.findflight.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
@@ -14,6 +13,7 @@ import study.com.findflight.R
 import study.com.findflight.ui.ErrorState
 import study.com.findflight.ui.NumberStopsQuery
 import study.com.findflight.ui.PartsDayQuery
+import study.com.findflight.ui.SuccessState
 import study.com.findflight.ui.adapter.ViewPagerAdapter
 import study.com.findflight.ui.fragment.InboundFlightsFragment
 import study.com.findflight.ui.fragment.OutboundFlightsFragment
@@ -33,34 +33,25 @@ class FlightsActivity : AppCompatActivity() {
 
         configureFragmentsWithViewPager()
 
+        configureListenerFAB()
+
         viewModel.flightState.observe(this, Observer { state ->
             when (state) {
-                is ErrorState -> showError(state.error)
+                is ErrorState -> {
+                    showError(state.error)
+                    fabFilter.hide()
+                }
+                is SuccessState -> fabFilter.show()
             }
         })
 
         viewModel.getFights()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_filter -> {
+    private fun configureListenerFAB() {
+        fabFilter.setOnClickListener {
             val i = Intent(this, QueryFlightsActivity::class.java)
             startActivityForResult(i, QUERY_CODE)
-            true
-        }
-        R.id.action_sort -> {
-            val i = Intent(this, SortFlightsActivity::class.java)
-            startActivityForResult(i, SORT_CODE)
-            true
-        }
-        else -> {
-            super.onOptionsItemSelected(item)
         }
     }
 
