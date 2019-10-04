@@ -13,15 +13,13 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import study.com.findflight.R
 import study.com.findflight.domain.FlightModel
-import study.com.findflight.ui.SuccessState
 import study.com.findflight.ui.adapter.FlightsAdapter
 import study.com.findflight.ui.viewmodel.FlightsViewModel
-import kotlin.collections.emptyList
 
 
 open class FlightsBaseFragment : Fragment() {
 
-    protected val adapter: FlightsAdapter by inject()
+    private val adapter: FlightsAdapter by inject()
 
     protected val model: FlightsViewModel by sharedViewModel()
 
