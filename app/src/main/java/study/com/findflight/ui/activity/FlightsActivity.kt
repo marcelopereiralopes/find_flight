@@ -32,7 +32,7 @@ class FlightsActivity : AppCompatActivity() {
 
         configureFragmentsWithViewPager()
 
-        configureListenerFAB()
+        configureFAB()
 
         viewModel.flightState.observe(this, Observer { state ->
             when (state) {
@@ -47,13 +47,21 @@ class FlightsActivity : AppCompatActivity() {
         viewModel.getFights()
     }
 
-    private fun configureListenerFAB() {
+    private fun configureFAB() {
         fabFilter.setOnClickListener {
             val i = Intent(this, QueryFlightsActivity::class.java)
             i.putExtra(PERIODS_OF_THE_DAY, periodsDay)
             i.putExtra(NUMBER_OF_STOPS, numberStops)
             startActivityForResult(i, QUERY_CODE)
         }
+    }
+
+    private fun configureFragmentsWithViewPager() {
+        val adapter = ViewPagerAdapter(supportFragmentManager)
+        adapter.addFragment(InboundFlightsFragment(), getString(R.string.ida))
+        adapter.addFragment(OutboundFlightsFragment(), getString(R.string.volta))
+        viewPager.adapter = adapter
+        tabs.setupWithViewPager(viewPager)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -87,15 +95,6 @@ class FlightsActivity : AppCompatActivity() {
         )
             .setAction(getString(R.string.retentar)) { viewModel.getFights() }
             .show()
-    }
-
-
-    private fun configureFragmentsWithViewPager() {
-        val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(InboundFlightsFragment(), getString(R.string.ida))
-        adapter.addFragment(OutboundFlightsFragment(), getString(R.string.volta))
-        viewPager.adapter = adapter
-        tabs.setupWithViewPager(viewPager)
     }
 
     private var periodsDay: String = ""
