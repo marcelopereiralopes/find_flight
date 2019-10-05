@@ -7,6 +7,7 @@ import study.com.findflight.data.repository.FlightsRepository
 import study.com.findflight.domain.FlightModel
 import study.com.findflight.domain.FlightsModel
 import study.com.findflight.ui.*
+import study.com.findflight.util.SortFlightEnum
 
 
 class FlightsViewModel(private val repository: FlightsRepository) : CoroutineViewModel() {
@@ -25,22 +26,25 @@ class FlightsViewModel(private val repository: FlightsRepository) : CoroutineVie
         }
     }
 
-    private val query = MutableLiveData<Pair<PeriodDayQuery, NumberStopsQuery>>()
+    private val query = MutableLiveData<Pair<List<Filter>, Sort>>()
 
     val flightFilteredState: LiveData<State> = Transformations.switchMap(
         query,
         ::temp
     )
 
-    private fun temp(pair: Pair<PeriodDayQuery, NumberStopsQuery>) = searchFlightWithQuery(pair)
+    private fun temp(pair: Pair<List<Filter>, Sort>) = searchFlightWithQuery(pair)
 
-    fun searchFlightByQuery(pair: Pair<PeriodDayQuery, NumberStopsQuery>) = apply {
+    fun filterSortFlightByParameters(pair: Pair<List<Filter>, Sort>) = apply {
         query.value = pair
     }
 
-    private fun searchFlightWithQuery(pair: Pair<PeriodDayQuery, NumberStopsQuery>): LiveData<State> {
-        val partsDay = pair.first.parts
-        val numberStops = pair.second.number
+    private fun searchFlightWithQuery(pair: Pair<List<Filter>, Sort>): LiveData<State> {
+        val listFilter = pair.first
+        val sortByPrice = pair.second
+
+        val periodDay: PeriodDayFilter = listFilter[0] as PeriodDayFilter
+        val numberStops: NumberStopsFilter = listFilter[1] as NumberStopsFilter
 
         val flightsFiltered = MutableLiveData<State>()
 
@@ -48,19 +52,24 @@ class FlightsViewModel(private val repository: FlightsRepository) : CoroutineVie
 
         val inboundFlightModelFiltered = mutableListOf<FlightModel>()
         flights.inboundFlightModel.forEach {
-            if ((partsDay.contains(it.period) || partsDay[0]=="")
-                && (numberStops.contains(it.stops.toString()) || numberStops[0]==""))
+            if ((periodDay.parts.contains(it.period) || periodDay.parts[0] == "")
+                && (numberStops.number.contains(it.stops.toString()) || numberStops.number[0] == "")
+            )
                 inboundFlightModelFiltered.add(it)
         }
 
         val outboundFlightModelFiltered = mutableListOf<FlightModel>()
         flights.outboundFlightModel.forEach {
-            if ((partsDay.contains(it.period) || partsDay[0]=="")
-                && (numberStops.contains(it.stops.toString()) || numberStops[0]==""))
+            if ((periodDay.parts.contains(it.period) || periodDay.parts[0] == "")
+                && (numberStops.number.contains(it.stops.toString()) || numberStops.number[0] == "")
+            )
                 outboundFlightModelFiltered.add(it)
         }
 
-        flights.inboundFlightModel
+        if ((sortByPrice as SortByPrice).value == SortFlightEnum.BIGGESTPRICE.name){
+            inboundFlightModelFiltered.reverse()
+            outboundFlightModelFiltered.reverse()
+        }
 
         flightsFiltered.value =
             SuccessState(FlightsModel(inboundFlightModelFiltered, outboundFlightModelFiltered))

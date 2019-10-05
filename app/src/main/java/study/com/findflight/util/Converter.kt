@@ -20,11 +20,11 @@ object Converter {
 
     fun calendarExtractPartOfDay(calendar: Calendar?): String? {
         calendar?.let {
-            return when(calendar.get(Calendar.HOUR_OF_DAY)){
-                in 6 .. 11 -> PartsDayEnum.MORNING.name
-                in 12 .. 17 -> PartsDayEnum.EVENING.name
-                in 18 .. 23 -> PartsDayEnum.NIGHT.name
-                else -> PartsDayEnum.DAWN.name
+            return when (calendar.get(Calendar.HOUR_OF_DAY)) {
+                in 6..11 -> PeriodDayEnum.MORNING.period
+                in 12..17 -> PeriodDayEnum.EVENING.period
+                in 18..23 -> PeriodDayEnum.NIGHT.period
+                else -> PeriodDayEnum.DAWN.period
             }
         }
 
@@ -33,18 +33,28 @@ object Converter {
 
     fun calendarExtractHourAndMinute(calendar: Calendar?): String? {
         calendar?.let {
-            return "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}"
+            val hour = paddingLeftIfNecessary(calendar.get(Calendar.HOUR_OF_DAY))
+            val minute = paddingLeftIfNecessary(calendar.get(Calendar.MINUTE))
+            return "$hour:$minute"
         }
         return null
     }
 
-    fun calendarDiffHoursAndMinutes(before: Calendar?, after: Calendar?) : String? {
-        if (before!=null && after!=null){
+    fun calendarDiffHoursAndMinutes(before: Calendar?, after: Calendar?): String? {
+        if (before != null && after != null) {
             val diff = (after.time.time - before.time.time)
-            val minutes = TimeUnit.MILLISECONDS.toMinutes(diff)%60
-            val hour = TimeUnit.MILLISECONDS.toHours(diff)
-            return "${hour}h:${minutes}"
+            val minutes = paddingLeftIfNecessary((TimeUnit.MILLISECONDS.toMinutes(diff) % 60).toInt())
+            val hour = paddingLeftIfNecessary(TimeUnit.MILLISECONDS.toHours(diff).toInt())
+            return "${hour}h:$minutes"
         }
         return null
     }
+
+    private fun paddingLeftIfNecessary(value: Int) =
+        if (value < 10) {
+            "0$value"
+        } else {
+            "$value"
+        }
+
 }

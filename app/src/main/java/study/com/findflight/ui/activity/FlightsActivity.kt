@@ -9,10 +9,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_flights.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import study.com.findflight.R
-import study.com.findflight.ui.ErrorState
-import study.com.findflight.ui.NumberStopsQuery
-import study.com.findflight.ui.PeriodDayQuery
-import study.com.findflight.ui.SuccessState
+import study.com.findflight.ui.*
 import study.com.findflight.ui.adapter.ViewPagerAdapter
 import study.com.findflight.ui.fragment.InboundFlightsFragment
 import study.com.findflight.ui.fragment.OutboundFlightsFragment
@@ -32,7 +29,7 @@ class FlightsActivity : AppCompatActivity() {
 
         configureFragmentsWithViewPager()
 
-        configureFAB()
+        configureListenerFAB()
 
         viewModel.flightState.observe(this, Observer { state ->
             when (state) {
@@ -47,12 +44,13 @@ class FlightsActivity : AppCompatActivity() {
         viewModel.getFights()
     }
 
-    private fun configureFAB() {
+    private fun configureListenerFAB() {
         fabFilter.setOnClickListener {
             val i = Intent(this, FilterFlightsActivity::class.java)
             i.putExtra(PERIODS_OF_THE_DAY, periodsDay)
             i.putExtra(NUMBER_OF_STOPS, numberStops)
-            startActivityForResult(i, QUERY_CODE)
+            i.putExtra(SORT, sortBy)
+            startActivityForResult(i, FILTER_CODE)
         }
     }
 
@@ -70,18 +68,17 @@ class FlightsActivity : AppCompatActivity() {
             1 -> {
                 periodsDay = data?.getStringExtra(PERIODS_OF_THE_DAY) ?: ""
                 numberStops = data?.getStringExtra(NUMBER_OF_STOPS) ?: ""
+                sortBy = data?.getStringExtra(SORT) ?: ""
 
-                viewModel.searchFlightByQuery(
+                viewModel.filterSortFlightByParameters(
                     Pair(
-                        PeriodDayQuery(periodsDay.split("/")),
-                        NumberStopsQuery(numberStops.split("/"))
+                        listOf(
+                            PeriodDayFilter(periodsDay.split("/")),
+                            NumberStopsFilter(numberStops.split("/"))
+                        ),
+                        SortByPrice(sortBy)
                     )
                 )
-            }
-            2 -> {
-            }
-            else -> {
-                Log.e("FlightsActivity", "Operation not allow!")
             }
         }
     }
@@ -99,11 +96,12 @@ class FlightsActivity : AppCompatActivity() {
 
     private var periodsDay: String = ""
     private var numberStops: String = ""
+    private var sortBy: String = ""
 
 }
 
-const val SORT_CODE = 2
-const val QUERY_CODE = 1
+const val FILTER_CODE = 1
 
 const val PERIODS_OF_THE_DAY = "PERIODS_OF_THE_DAY"
 const val NUMBER_OF_STOPS = "NUMBER_OF_STOPS"
+const val SORT = "SORT"
