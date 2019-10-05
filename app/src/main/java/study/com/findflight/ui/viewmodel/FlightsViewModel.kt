@@ -42,22 +42,22 @@ class FlightsViewModel(private val repository: FlightsRepository) : CoroutineVie
         val partsDay = pair.first.parts
         val numberStops = pair.second.number
 
-        if (emptySafeParameters(partsDay, numberStops)) return mFlightState
-
         val flightsFiltered = MutableLiveData<State>()
 
         val flights = (mFlightState.value as SuccessState).flights
 
         val inboundFlightModelFiltered = mutableListOf<FlightModel>()
         flights.inboundFlightModel.forEach {
-            if (partsDay.contains(it.period)) inboundFlightModelFiltered.add(it)
-            else if (numberStops.contains(it.stops.toString())) inboundFlightModelFiltered.add(it)
+            if ((partsDay.contains(it.period) || partsDay[0]=="")
+                && (numberStops.contains(it.stops.toString()) || numberStops[0]==""))
+                inboundFlightModelFiltered.add(it)
         }
 
         val outboundFlightModelFiltered = mutableListOf<FlightModel>()
         flights.outboundFlightModel.forEach {
-            if (partsDay.contains(it.period)) outboundFlightModelFiltered.add(it)
-            else if (numberStops.contains(it.stops.toString())) outboundFlightModelFiltered.add(it)
+            if ((partsDay.contains(it.period) || partsDay[0]=="")
+                && (numberStops.contains(it.stops.toString()) || numberStops[0]==""))
+                outboundFlightModelFiltered.add(it)
         }
 
         flights.inboundFlightModel
@@ -66,17 +66,5 @@ class FlightsViewModel(private val repository: FlightsRepository) : CoroutineVie
             SuccessState(FlightsModel(inboundFlightModelFiltered, outboundFlightModelFiltered))
 
         return flightsFiltered
-    }
-
-    private fun emptySafeParameters(
-        partsDay: List<String>,
-        numberStops: List<String>
-    ): Boolean {
-        if (partsDay.size == 1
-            && partsDay[0] == ""
-            && numberStops.size == 1
-            && numberStops[0] == ""
-        ) return true
-        return false
     }
 }

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.activity.SortFlightsActivity"></activity>
-        <activity android:name=".ui.activity.QueryFlightsActivity" />
+        <activity android:name=".ui.activity.FilterFlightsActivity" />
         <activity
             android:name=".ui.activity.FlightsActivity"
             android:screenOrientation="portrait">

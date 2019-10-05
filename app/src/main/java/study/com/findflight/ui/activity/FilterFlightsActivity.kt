@@ -2,17 +2,17 @@ package study.com.findflight.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_query_flights.*
+import kotlinx.android.synthetic.main.activity_filter_flights.*
 import kotlinx.android.synthetic.main.activity_flights.toolbar
 import study.com.findflight.R
 import study.com.findflight.util.PartsDayEnum
 import java.lang.StringBuilder
 
-class QueryFlightsActivity : AppCompatActivity() {
+class FilterFlightsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_query_flights)
+        setContentView(R.layout.activity_filter_flights)
 
         setSupportActionBar(toolbar)
         supportActionBar?.title = getString(R.string.filtros)

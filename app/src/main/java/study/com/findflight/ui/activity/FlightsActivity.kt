@@ -49,7 +49,7 @@ class FlightsActivity : AppCompatActivity() {
 
     private fun configureFAB() {
         fabFilter.setOnClickListener {
-            val i = Intent(this, QueryFlightsActivity::class.java)
+            val i = Intent(this, FilterFlightsActivity::class.java)
             i.putExtra(PERIODS_OF_THE_DAY, periodsDay)
             i.putExtra(NUMBER_OF_STOPS, numberStops)
             startActivityForResult(i, QUERY_CODE)
