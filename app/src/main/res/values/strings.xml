@@ -25,4 +25,8 @@
     <string name="_1h30_1_parada">1h30, 1 parada</string>
     <string name="valor_total_c_taxas">Valor total c/ taxas</string>
     <string name="nenhum_voo_encontrado">Nenhum voo encontrado :(</string>
+    <string name="menor_preco">Menor preço</string>
+    <string name="maior_preco">Maior preço</string>
+    <string name="menor_pre_o_e_menor_tempo_de_voo">Menor preço e menor tempo de voo</string>
+    <string name="ordenar">Ordenar</string>
 </resources>
