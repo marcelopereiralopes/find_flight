@@ -7,6 +7,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -14,6 +15,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
 import study.com.findflight.data.repository.FlightsRepository
 import study.com.findflight.ui.State
+import study.com.findflight.ui.SuccessState
+import study.com.findflight.ui.viewmodel.MockedData.mockList
 
 
 @ExtendWith(MockKExtension::class)
@@ -47,12 +50,12 @@ internal class FlightsViewModelTest {
     @Test
     fun `when I get a available flights`() {
 
-        coEvery { repository.getFlights() } returns MockedData.mockList
+        coEvery { repository.getFlights() } returns mockList
 
         viewModel.getFights()
 
         coVerify(exactly = 1) { repository.getFlights() }
 
-
+        Assert.assertEquals(SuccessState(mockList), viewModel.state.value)
     }
 }
