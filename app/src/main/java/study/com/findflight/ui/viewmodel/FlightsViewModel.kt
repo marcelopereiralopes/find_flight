@@ -19,7 +19,7 @@ class FlightsViewModel(private val repository: FlightsRepository,
     val state: LiveData<State>
         get() = mState
 
-    fun getFights() = launch {
+    fun getFlights() = launch {
         mState.value = LoadingState
         try {
             val flights = repository.getFlights()

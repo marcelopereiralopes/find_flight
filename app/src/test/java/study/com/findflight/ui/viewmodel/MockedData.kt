@@ -3,18 +3,17 @@ package study.com.findflight.ui.viewmodel
 import study.com.findflight.domain.FlightModel
 import study.com.findflight.domain.FlightsModel
 import study.com.findflight.util.PeriodDayEnum
-import java.util.*
 
 
 object MockedData {
 
-    val mockList = FlightsModel(
+    val flightsMockList = FlightsModel(
         mutableListOf(
             FlightModel(
                 "BSB",
                 "CNF",
-                Calendar.getInstance(),
-                Calendar.getInstance(),
+                null,
+                null,
                 PeriodDayEnum.EVENING.period,
                 1,
                 100.00
@@ -22,18 +21,18 @@ object MockedData {
             FlightModel(
                 "TWT",
                 "SAS",
-                Calendar.getInstance(),
-                Calendar.getInstance(),
-                PeriodDayEnum.EVENING.period,
-                0,
+                null,
+                null,
+                PeriodDayEnum.NIGHT.period,
+                1,
                 310.00
             )
         ), mutableListOf(
             FlightModel(
                 "CNF",
                 "BSB",
-                Calendar.getInstance(),
-                Calendar.getInstance(),
+                null,
+                null,
                 PeriodDayEnum.NIGHT.period,
                 1,
                 150.00
@@ -41,11 +40,119 @@ object MockedData {
             FlightModel(
                 "XZT",
                 "WAS",
-                Calendar.getInstance(),
-                Calendar.getInstance(),
-                PeriodDayEnum.NIGHT.period,
-                0,
+                null,
+                null,
+                PeriodDayEnum.EVENING.period,
+                1,
                 350.00
+            )
+        )
+    )
+
+    val flightsOrderByLowestPriceMockList = FlightsModel(
+        mutableListOf(
+            FlightModel(
+                "BSB",
+                "CNF",
+                null,
+                null,
+                PeriodDayEnum.EVENING.period,
+                1,
+                100.00
+            ),
+            FlightModel(
+                "TWT",
+                "SAS",
+                null,
+                null,
+                PeriodDayEnum.NIGHT.period,
+                1,
+                310.00
+            )
+        ), mutableListOf(
+            FlightModel(
+                "CNF",
+                "BSB",
+                null,
+                null,
+                PeriodDayEnum.NIGHT.period,
+                1,
+                150.00
+            ),
+            FlightModel(
+                "XZT",
+                "WAS",
+                null,
+                null,
+                PeriodDayEnum.EVENING.period,
+                1,
+                350.00
+            )
+        )
+    )
+
+    val flightsOrderByHighestPriceMockList = FlightsModel(
+        mutableListOf(
+            FlightModel(
+                "TWT",
+                "SAS",
+                null,
+                null,
+                PeriodDayEnum.NIGHT.period,
+                1,
+                310.00
+            ),
+            FlightModel(
+                "BSB",
+                "CNF",
+                null,
+                null,
+                PeriodDayEnum.EVENING.period,
+                1,
+                100.00
+            )
+        ), mutableListOf(
+            FlightModel(
+                "XZT",
+                "WAS",
+                null,
+                null,
+                PeriodDayEnum.EVENING.period,
+                1,
+                350.00
+            ),
+            FlightModel(
+                "CNF",
+                "BSB",
+                null,
+                null,
+                PeriodDayEnum.NIGHT.period,
+                1,
+                150.00
+            )
+        )
+    )
+
+    val flightsMockListWithNightPeriod = FlightsModel(
+        mutableListOf(
+            FlightModel(
+                "TWT",
+                "SAS",
+                null,
+                null,
+                PeriodDayEnum.NIGHT.period,
+                1,
+                310.00
+            )
+        ), mutableListOf(
+            FlightModel(
+                "CNF",
+                "BSB",
+                null,
+                null,
+                PeriodDayEnum.NIGHT.period,
+                1,
+                150.00
             )
         )
     )

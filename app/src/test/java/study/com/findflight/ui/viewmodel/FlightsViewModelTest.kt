@@ -1,6 +1,7 @@
 package study.com.findflight.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -13,9 +14,14 @@ import org.junit.Test
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
 import study.com.findflight.data.repository.FlightsRepository
-import study.com.findflight.ui.ErrorState
-import study.com.findflight.ui.SuccessState
-import study.com.findflight.ui.viewmodel.MockedData.mockList
+import study.com.findflight.ui.*
+import study.com.findflight.ui.viewmodel.MockedData.flightsMockListWithNightPeriod
+import study.com.findflight.ui.viewmodel.MockedData.flightsMockList
+import study.com.findflight.ui.viewmodel.MockedData.flightsOrderByHighestPriceMockList
+import study.com.findflight.ui.viewmodel.MockedData.flightsOrderByLowestPriceMockList
+import study.com.findflight.util.NumberStopEnum
+import study.com.findflight.util.PeriodDayEnum
+import study.com.findflight.util.SortFlightEnum
 
 
 @ExtendWith(MockKExtension::class)
@@ -41,13 +47,13 @@ internal class FlightsViewModelTest {
     @Test
     fun `when I get a available flights`() {
 
-        coEvery { repository.getFlights() } returns mockList
+        coEvery { repository.getFlights() } returns flightsMockList
 
-        viewModel.getFights()
+        viewModel.getFlights()
 
         coVerify(exactly = 1) { repository.getFlights() }
 
-        Assert.assertEquals(SuccessState(mockList), viewModel.state.value)
+        Assert.assertEquals(SuccessState(flightsMockList), viewModel.state.value)
     }
 
     @Test
@@ -57,10 +63,113 @@ internal class FlightsViewModelTest {
 
         coEvery { repository.getFlights() } throws throwable
 
-        viewModel.getFights()
+        viewModel.getFlights()
 
         coVerify(exactly = 1) { repository.getFlights() }
 
-        Assert.assertEquals(ErrorState(throwable), viewModel.state.value)
+        Assert.assertEquals(
+            ErrorState(throwable),
+            viewModel.state.value
+        )
+    }
+
+    @Test
+    fun `when I order available flights by the lowest price`() {
+        val observer = Observer<State> {}
+
+        try {
+
+            coEvery { repository.getFlights() } returns flightsMockList
+
+            viewModel.filterState.observeForever(observer)
+
+            viewModel.getFlights()
+
+            viewModel.filterSortFlightByParameters(
+                Pair(
+                    listOf(
+                        PeriodDayFilter(listOf("")),
+                        NumberStopsFilter(listOf(""))
+                    ),
+                    SortByPrice(SortFlightEnum.LOWESTPRICE.name)
+                )
+            )
+
+            coVerify(exactly = 1) { repository.getFlights() }
+
+            Assert.assertEquals(
+                SuccessState(flightsOrderByLowestPriceMockList),
+                viewModel.filterState.value
+            )
+        } finally {
+            viewModel.filterState.removeObserver(observer)
+        }
+    }
+
+    @Test
+    fun `when I order available flights by the highest price`() {
+
+        val observer = Observer<State> {}
+
+        try {
+            coEvery { repository.getFlights() } returns flightsMockList
+
+            viewModel.filterState.observeForever(observer)
+
+            viewModel.getFlights()
+
+            viewModel.filterSortFlightByParameters(
+                Pair(
+                    listOf(
+                        PeriodDayFilter(listOf("")),
+                        NumberStopsFilter(listOf(""))
+                    ),
+                    SortByPrice(SortFlightEnum.BIGGESTPRICE.name)
+                )
+            )
+
+            coVerify(exactly = 1) { repository.getFlights() }
+
+            Assert.assertEquals(
+                SuccessState(flightsOrderByHighestPriceMockList),
+                viewModel.filterState.value
+            )
+
+        } finally {
+            viewModel.filterState.removeObserver(observer)
+        }
+    }
+
+    @Test
+    fun `when I want to filter for available night flights`() {
+
+        val observer = Observer<State> {}
+
+        try {
+            coEvery { repository.getFlights() } returns flightsMockList
+
+            viewModel.filterState.observeForever(observer)
+
+            viewModel.getFlights()
+
+            viewModel.filterSortFlightByParameters(
+                Pair(
+                    listOf(
+                        PeriodDayFilter(listOf(PeriodDayEnum.NIGHT.period)),
+                        NumberStopsFilter(listOf(NumberStopEnum.ONE.value))
+                    ),
+                    SortByPrice(SortFlightEnum.LOWESTPRICE.name)
+                )
+            )
+
+            coVerify(exactly = 1) { repository.getFlights() }
+
+            Assert.assertEquals(
+                SuccessState(flightsMockListWithNightPeriod),
+                viewModel.filterState.value
+            )
+        } finally {
+            viewModel.filterState.removeObserver(observer)
+        }
     }
 }

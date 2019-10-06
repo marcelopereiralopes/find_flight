@@ -41,7 +41,7 @@ class FlightsActivity : AppCompatActivity() {
             }
         })
 
-        viewModel.getFights()
+        viewModel.getFlights()
     }
 
     private fun configureListenerFAB() {
@@ -90,7 +90,7 @@ class FlightsActivity : AppCompatActivity() {
             getString(R.string.indisponivel),
             Snackbar.LENGTH_INDEFINITE
         )
-            .setAction(getString(R.string.retentar)) { viewModel.getFights() }
+            .setAction(getString(R.string.retentar)) { viewModel.getFlights() }
             .show()
     }
 
