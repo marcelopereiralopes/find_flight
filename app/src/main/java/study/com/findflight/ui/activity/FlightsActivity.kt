@@ -31,7 +31,7 @@ class FlightsActivity : AppCompatActivity() {
 
         configureListenerFAB()
 
-        viewModel.flightState.observe(this, Observer { state ->
+        viewModel.state.observe(this, Observer { state ->
             when (state) {
                 is ErrorState -> {
                     showError(state.error)

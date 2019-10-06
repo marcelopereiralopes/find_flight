@@ -4,14 +4,17 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.Dispatchers.Main
+import study.com.findflight.SchedulerProvider
 
 
-abstract class CoroutineViewModel : ViewModel() {
+abstract class CoroutineViewModel(private val scheduledProvider: SchedulerProvider) : ViewModel() {
     private var jobs = listOf<Job>()
 
     fun launch(block: suspend CoroutineScope.() -> Unit) {
-        jobs = jobs + kotlinx.coroutines.GlobalScope.launch(context = Main, block = block)
+        jobs = jobs + kotlinx.coroutines.GlobalScope.launch(
+            context = scheduledProvider.ui(),
+            block = block
+        )
     }
 
     override fun onCleared() {

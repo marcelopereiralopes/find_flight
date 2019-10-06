@@ -13,7 +13,7 @@ class InboundFlightsFragment : FlightsBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        model.flightState.observe(this, Observer { state ->
+        model.state.observe(this, Observer { state ->
             state?.let {
                 when (state) {
                     is LoadingState -> {
@@ -29,7 +29,7 @@ class InboundFlightsFragment : FlightsBaseFragment() {
             }
         })
 
-        model.flightFilteredState.observe(this, Observer { state ->
+        model.filterState.observe(this, Observer { state ->
             state?.let {
                 when (state) {
                     is LoadingState -> {

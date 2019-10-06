@@ -7,28 +7,31 @@ import study.com.findflight.data.repository.FlightsRepository
 import study.com.findflight.domain.FlightModel
 import study.com.findflight.domain.FlightsModel
 import study.com.findflight.ui.*
+import study.com.findflight.SchedulerProvider
 import study.com.findflight.util.SortFlightEnum
 
 
-class FlightsViewModel(private val repository: FlightsRepository) : CoroutineViewModel() {
+class FlightsViewModel(private val repository: FlightsRepository,
+                       schedulerProvider: SchedulerProvider
+) : CoroutineViewModel(schedulerProvider) {
 
-    private val mFlightState = MutableLiveData<State>()
-    val flightState: LiveData<State>
-        get() = mFlightState
+    private val mState = MutableLiveData<State>()
+    val state: LiveData<State>
+        get() = mState
 
     fun getFights() = launch {
-        mFlightState.value = LoadingState
+        mState.value = LoadingState
         try {
             val flights = repository.getFlights()
-            mFlightState.value = SuccessState.from(flights)
+            mState.value = SuccessState.from(flights)
         } catch (e: Throwable) {
-            mFlightState.value = ErrorState(e)
+            mState.value = ErrorState(e)
         }
     }
 
     private val query = MutableLiveData<Pair<List<Filter>, Sort>>()
 
-    val flightFilteredState: LiveData<State> = Transformations.switchMap(
+    val filterState: LiveData<State> = Transformations.switchMap(
         query,
         ::temp
     )
@@ -48,7 +51,7 @@ class FlightsViewModel(private val repository: FlightsRepository) : CoroutineVie
 
         val flightsFiltered = MutableLiveData<State>()
 
-        val flights = (mFlightState.value as SuccessState).flights
+        val flights = (mState.value as SuccessState).flights
 
         val inboundFlightModelFiltered = mutableListOf<FlightModel>()
         flights.inboundFlightModel.forEach {
