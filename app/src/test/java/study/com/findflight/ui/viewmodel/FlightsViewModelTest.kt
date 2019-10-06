@@ -1,7 +1,6 @@
 package study.com.findflight.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -14,7 +13,7 @@ import org.junit.Test
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
 import study.com.findflight.data.repository.FlightsRepository
-import study.com.findflight.ui.State
+import study.com.findflight.ui.ErrorState
 import study.com.findflight.ui.SuccessState
 import study.com.findflight.ui.viewmodel.MockedData.mockList
 
@@ -23,12 +22,6 @@ import study.com.findflight.ui.viewmodel.MockedData.mockList
 internal class FlightsViewModelTest {
 
     lateinit var viewModel: FlightsViewModel
-
-    @MockK
-    lateinit var statesView: Observer<State>
-
-    @MockK
-    lateinit var filterStatesView: Observer<State>
 
     @MockK
     lateinit var repository: FlightsRepository
@@ -43,8 +36,6 @@ internal class FlightsViewModelTest {
 
         viewModel = FlightsViewModel(repository, TestSchedulerProvider())
 
-        viewModel.state.observeForever(statesView)
-        viewModel.filterState.observeForever(filterStatesView)
     }
 
     @Test
@@ -57,5 +48,19 @@ internal class FlightsViewModelTest {
         coVerify(exactly = 1) { repository.getFlights() }
 
         Assert.assertEquals(SuccessState(mockList), viewModel.state.value)
+    }
+
+    @Test
+    fun `when I get internet connection error`() {
+
+        val throwable = Throwable("Internet connection fail.")
+
+        coEvery { repository.getFlights() } throws throwable
+
+        viewModel.getFights()
+
+        coVerify(exactly = 1) { repository.getFlights() }
+
+        Assert.assertEquals(ErrorState(throwable), viewModel.state.value)
     }
 }
