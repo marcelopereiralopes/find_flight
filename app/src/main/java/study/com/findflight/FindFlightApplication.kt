@@ -7,10 +7,14 @@ import study.com.findflight.di.appModules
 import study.com.findflight.di.networkModules
 
 
-class FindFlightApplication : Application() {
+open class FindFlightApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        startComponent()
+    }
+
+    open fun startComponent() {
         startKoin {
             androidContext(this@FindFlightApplication)
             modules(listOf(appModules, networkModules))
