@@ -42,7 +42,7 @@ class FlightsActivityTest {
     }
 
     @Test
-    fun whenResultIsOk_shouldDisplayFlightListWithFAB() {
+    fun whenResultIsOk_shouldDisplayFlightListAndShowFAB() {
         server.enqueue(
             MockResponse()
                 .setResponseCode(200)
@@ -54,7 +54,7 @@ class FlightsActivityTest {
     }
 
     @Test
-    fun whenResultIsOk_butNotFoundFlights_shouldDisplayEmptyListWithFAB() {
+    fun whenResultIsOk_butNotFoundFlights_shouldDisplayEmptyListMessageAndShowFAB() {
         server.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
         mActivityRule.launchActivity(Intent())
         onView(withId(R.id.fabFilter)).check(matches(isDisplayed()))
@@ -62,7 +62,7 @@ class FlightsActivityTest {
     }
 
     @Test
-    fun whenResultIsTimeout_shouldHideFAB() {
+    fun whenResultIsTimeout_shouldDisplayEmptyListMessageAndHideFAB() {
         server.enqueue(
             MockResponse()
                 .setResponseCode(408)
