@@ -9,6 +9,7 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.rule.ActivityTestRule
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -39,9 +40,21 @@ class FlightsActivityTest {
     }
 
     @Test
-    fun whenResultIsOk_butNotFoundFlights_shouldDisplayEmptyList() {
+    fun whenResultIsOk_butNotFoundFlights_shouldDisplayEmptyListWithFAB() {
         server.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
         mActivityRule.launchActivity(Intent())
         onView(withId(R.id.fabFilter)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun whenResultIsTimeout_shouldDisplayEmptyListWithoutFAB() {
+        server.enqueue(
+            MockResponse().setResponseCode(408).setHeader(
+                "Connection",
+                "Close"
+            ).setBody("You took too long!")
+        )
+        mActivityRule.launchActivity(Intent())
+        onView(withId(R.id.fabFilter)).check(matches(not(isDisplayed())))
     }
 }
