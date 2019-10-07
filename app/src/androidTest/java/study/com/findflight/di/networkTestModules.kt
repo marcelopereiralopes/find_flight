@@ -9,9 +9,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import study.com.findflight.data.datasource.remote.FlightsDatasource
 import java.util.concurrent.TimeUnit
 
-const val SERVER_URL = ""
+const val TEST_SERVER_URL = "http://localhost:8080/"
 
-val networkModules = module {
+val networkTestModules = module {
 
     single<OkHttpClient> {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
@@ -26,7 +26,7 @@ val networkModules = module {
 
     single<Retrofit> {
         Retrofit.Builder()
-            .baseUrl(SERVER_URL)
+            .baseUrl(TEST_SERVER_URL)
             .client(get())
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())

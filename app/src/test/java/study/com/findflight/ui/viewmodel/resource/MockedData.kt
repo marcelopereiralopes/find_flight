@@ -1,4 +1,4 @@
-package study.com.findflight.ui.viewmodel
+package study.com.findflight.ui.viewmodel.resource
 
 import study.com.findflight.domain.FlightModel
 import study.com.findflight.domain.FlightsModel
