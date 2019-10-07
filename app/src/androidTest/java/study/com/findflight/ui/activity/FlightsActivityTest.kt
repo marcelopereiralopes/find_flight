@@ -16,6 +16,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import study.com.findflight.R
+import study.com.findflight.resource.MockedFlightsForInterfaceTest
 
 
 @RunWith(AndroidJUnit4ClassRunner::class)
@@ -40,6 +41,17 @@ class FlightsActivityTest {
     }
 
     @Test
+    fun whenResultIsOk_shouldDisplayFlightListWithFAB() {
+        server.enqueue(
+            MockResponse()
+                .setResponseCode(200)
+                .setBody(MockedFlightsForInterfaceTest.flights)
+        )
+        mActivityRule.launchActivity(Intent())
+        onView(withId(R.id.fabFilter)).check(matches(isDisplayed()))
+    }
+
+    @Test
     fun whenResultIsOk_butNotFoundFlights_shouldDisplayEmptyListWithFAB() {
         server.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
         mActivityRule.launchActivity(Intent())
@@ -47,7 +59,7 @@ class FlightsActivityTest {
     }
 
     @Test
-    fun whenResultIsTimeout_shouldDisplayEmptyListWithoutFAB() {
+    fun whenResultIsTimeout_shouldHideFAB() {
         server.enqueue(
             MockResponse().setResponseCode(408).setHeader(
                 "Connection",

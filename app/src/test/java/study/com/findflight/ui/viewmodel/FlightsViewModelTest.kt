@@ -15,10 +15,10 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
 import study.com.findflight.data.repository.FlightsRepository
 import study.com.findflight.ui.*
-import study.com.findflight.ui.viewmodel.resource.MockedData.flightsMockListWithNightPeriod
-import study.com.findflight.ui.viewmodel.resource.MockedData.flightsMockList
-import study.com.findflight.ui.viewmodel.resource.MockedData.flightsOrderByHighestPriceMockList
-import study.com.findflight.ui.viewmodel.resource.MockedData.flightsOrderByLowestPriceMockList
+import study.com.findflight.ui.viewmodel.resource.MockedFlightsForUnitTest.flightsMockListWithNightPeriod
+import study.com.findflight.ui.viewmodel.resource.MockedFlightsForUnitTest.flightsMockList
+import study.com.findflight.ui.viewmodel.resource.MockedFlightsForUnitTest.flightsOrderByHighestPriceMockList
+import study.com.findflight.ui.viewmodel.resource.MockedFlightsForUnitTest.flightsOrderByLowestPriceMockList
 import study.com.findflight.util.NumberStopEnum
 import study.com.findflight.util.PeriodDayEnum
 import study.com.findflight.util.SortFlightEnum

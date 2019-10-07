@@ -5,7 +5,7 @@ import study.com.findflight.domain.FlightsModel
 import study.com.findflight.util.PeriodDayEnum
 
 
-object MockedData {
+object MockedFlightsForUnitTest {
 
     val flightsMockList = FlightsModel(
         mutableListOf(
