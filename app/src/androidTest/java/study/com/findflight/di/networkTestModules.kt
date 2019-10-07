@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import study.com.findflight.data.datasource.remote.FlightsDatasource
 import java.util.concurrent.TimeUnit
 
-const val TEST_SERVER_URL = "/"
+const val TEST_SERVER_URL = "http://localhost:8080/"
 
 val networkTestModules = module {
 

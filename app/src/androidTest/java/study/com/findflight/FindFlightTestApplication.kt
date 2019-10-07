@@ -7,7 +7,7 @@ import study.com.findflight.di.networkTestModules
 
 class FindFlightTestApplication : FindFlightApplication() {
 
-    override fun startComponent() {
+    override fun setupKoin() {
         startKoin {
             androidContext(this@FindFlightTestApplication)
             modules(listOf(appTestModules, networkTestModules))

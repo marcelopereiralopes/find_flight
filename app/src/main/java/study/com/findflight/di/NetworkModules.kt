@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import study.com.findflight.data.datasource.remote.FlightsDatasource
 import java.util.concurrent.TimeUnit
 
-const val SERVER_URL = "https://vcugj6hmt5.execute-api.us-east-1.amazonaws.com/"
+const val SERVER_URL = ""
 
 val networkModules = module {
 

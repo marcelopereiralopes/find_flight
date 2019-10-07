@@ -11,10 +11,10 @@ open class FindFlightApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        startComponent()
+        setupKoin()
     }
 
-    open fun startComponent() {
+    open fun setupKoin() {
         startKoin {
             androidContext(this@FindFlightApplication)
             modules(listOf(appModules, networkModules))
