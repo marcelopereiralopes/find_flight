@@ -28,7 +28,7 @@
         tools:listitem="@layout/flight_item" />
 
     <TextView
-        android:id="@+id/emptyList"
+        android:id="@+id/emptyListMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nenhum_voo_encontrado"

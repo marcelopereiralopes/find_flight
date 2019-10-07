@@ -9,6 +9,7 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.rule.ActivityTestRule
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
@@ -49,6 +50,7 @@ class FlightsActivityTest {
         )
         mActivityRule.launchActivity(Intent())
         onView(withId(R.id.fabFilter)).check(matches(isDisplayed()))
+        onView(allOf(withId(R.id.recyclerView), isDisplayed()))
     }
 
     @Test
@@ -56,17 +58,19 @@ class FlightsActivityTest {
         server.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
         mActivityRule.launchActivity(Intent())
         onView(withId(R.id.fabFilter)).check(matches(isDisplayed()))
+        onView(allOf(withId(R.id.emptyListMessage), isDisplayed()))
     }
 
     @Test
     fun whenResultIsTimeout_shouldHideFAB() {
         server.enqueue(
-            MockResponse().setResponseCode(408).setHeader(
-                "Connection",
-                "Close"
-            ).setBody("You took too long!")
+            MockResponse()
+                .setResponseCode(408)
+                .setHeader("Connection", "Close")
+                .setBody("You took too long!")
         )
         mActivityRule.launchActivity(Intent())
         onView(withId(R.id.fabFilter)).check(matches(not(isDisplayed())))
+        onView(allOf(withId(R.id.emptyListMessage), isDisplayed()))
     }
 }

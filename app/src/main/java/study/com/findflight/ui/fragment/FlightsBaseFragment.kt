@@ -41,12 +41,12 @@ open class FlightsBaseFragment : Fragment() {
     protected fun errorConfig() {
         numberOfFlights.visibility = View.GONE
         progressBar.visibility = View.GONE
-        emptyList.visibility = View.VISIBLE
+        emptyListMessage.visibility = View.VISIBLE
     }
 
     protected fun loadingConfig() {
         progressBar.visibility = View.VISIBLE
-        emptyList.visibility = View.GONE
+        emptyListMessage.visibility = View.GONE
         numberOfFlights.visibility = View.GONE
     }
 
@@ -56,9 +56,9 @@ open class FlightsBaseFragment : Fragment() {
         numberOfFlights.visibility = View.VISIBLE
 
         if (flights > 0) {
-            emptyList.visibility = View.GONE
+            emptyListMessage.visibility = View.GONE
         } else {
-            emptyList.visibility = View.VISIBLE
+            emptyListMessage.visibility = View.VISIBLE
             numberOfFlights.visibility = View.GONE
         }
         val textInput = "Encontramos $flights voos"
