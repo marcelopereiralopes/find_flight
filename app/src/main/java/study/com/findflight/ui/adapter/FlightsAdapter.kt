@@ -37,7 +37,7 @@ class FlightsAdapter(
         fun bind(flight: FlightModel) = with(flightView) {
             from.text = flight.from
             to.text = flight.to
-            value.text = flight.value.toString()
+            value.text = Converter.currencyPtBrFormatter(flight.value)
             departure.text = Converter.calendarExtractHourAndMinute(flight.departure)
             arrival.text = Converter.calendarExtractHourAndMinute(flight.arrival)
             val timeAndStopText =
@@ -47,6 +47,5 @@ class FlightsAdapter(
                 ) + ", ${flight.stops} parada"
             timeAndNumberStops.text = timeAndStopText
         }
-
     }
 }

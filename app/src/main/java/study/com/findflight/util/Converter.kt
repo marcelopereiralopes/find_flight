@@ -1,5 +1,6 @@
 package study.com.findflight.util
 
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -46,6 +47,14 @@ object Converter {
             val minutes = paddingLeftIfNecessary((TimeUnit.MILLISECONDS.toMinutes(diff) % 60).toInt())
             val hour = paddingLeftIfNecessary(TimeUnit.MILLISECONDS.toHours(diff).toInt())
             return "${hour}h:$minutes"
+        }
+        return null
+    }
+
+    fun currencyPtBrFormatter(value: Double?): String? {
+        value?.let {
+            val ptBr = Locale("pt", "BR")
+            return NumberFormat.getCurrencyInstance(ptBr).format(value.toLong())
         }
         return null
     }
