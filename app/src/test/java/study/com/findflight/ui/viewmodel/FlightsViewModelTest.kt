@@ -14,9 +14,14 @@ import org.junit.Test
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
 import study.com.findflight.data.repository.FlightsRepository
-import study.com.findflight.ui.*
-import study.com.findflight.ui.viewmodel.resource.MockedFlightsForUnitTest.flightsMockListWithNightPeriod
+import study.com.findflight.ui.ErrorState
+import study.com.findflight.ui.State
+import study.com.findflight.ui.SuccessState
+import study.com.findflight.ui.filter.NumberStopsFilter
+import study.com.findflight.ui.filter.PeriodDayFilter
+import study.com.findflight.ui.filter.SortByPrice
 import study.com.findflight.ui.viewmodel.resource.MockedFlightsForUnitTest.flightsMockList
+import study.com.findflight.ui.viewmodel.resource.MockedFlightsForUnitTest.flightsMockListWithNightPeriod
 import study.com.findflight.ui.viewmodel.resource.MockedFlightsForUnitTest.flightsOrderByHighestPriceMockList
 import study.com.findflight.ui.viewmodel.resource.MockedFlightsForUnitTest.flightsOrderByLowestPriceMockList
 import study.com.findflight.util.NumberStopEnum
@@ -85,11 +90,11 @@ internal class FlightsViewModelTest {
 
             viewModel.getFlights()
 
-            viewModel.filterSortFlightByParameters(
+            viewModel.filterSortFlight(
                 Pair(
                     listOf(
-                        PeriodDayFilter(listOf("")),
-                        NumberStopsFilter(listOf(""))
+                        PeriodDayFilter(mutableListOf()),
+                        NumberStopsFilter(mutableListOf())
                     ),
                     SortByPrice(SortFlightEnum.LOWESTPRICE.name)
                 )
@@ -118,11 +123,11 @@ internal class FlightsViewModelTest {
 
             viewModel.getFlights()
 
-            viewModel.filterSortFlightByParameters(
+            viewModel.filterSortFlight(
                 Pair(
                     listOf(
-                        PeriodDayFilter(listOf("")),
-                        NumberStopsFilter(listOf(""))
+                        PeriodDayFilter(mutableListOf()),
+                        NumberStopsFilter(mutableListOf())
                     ),
                     SortByPrice(SortFlightEnum.BIGGESTPRICE.name)
                 )
@@ -152,11 +157,11 @@ internal class FlightsViewModelTest {
 
             viewModel.getFlights()
 
-            viewModel.filterSortFlightByParameters(
+            viewModel.filterSortFlight(
                 Pair(
                     listOf(
-                        PeriodDayFilter(listOf(PeriodDayEnum.NIGHT.period)),
-                        NumberStopsFilter(listOf(NumberStopEnum.ONE.value))
+                        PeriodDayFilter(mutableListOf(PeriodDayEnum.NIGHT.period)),
+                        NumberStopsFilter(mutableListOf(NumberStopEnum.ONE.value))
                     ),
                     SortByPrice(SortFlightEnum.LOWESTPRICE.name)
                 )

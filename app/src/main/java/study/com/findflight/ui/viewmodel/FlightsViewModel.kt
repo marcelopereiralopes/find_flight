@@ -8,6 +8,7 @@ import study.com.findflight.domain.FlightModel
 import study.com.findflight.domain.FlightsModel
 import study.com.findflight.ui.*
 import study.com.findflight.SchedulerProvider
+import study.com.findflight.ui.filter.*
 import study.com.findflight.util.SortFlightEnum
 
 
@@ -38,7 +39,7 @@ class FlightsViewModel(private val repository: FlightsRepository,
 
     private fun temp(pair: Pair<List<Filter>, Sort>) = searchFlightWithQuery(pair)
 
-    fun filterSortFlightByParameters(pair: Pair<List<Filter>, Sort>) = apply {
+    fun filterSortFlight(pair: Pair<List<Filter>, Sort>) = apply {
         query.value = pair
     }
 
@@ -55,16 +56,16 @@ class FlightsViewModel(private val repository: FlightsRepository,
 
         val inboundFlightModelFiltered = mutableListOf<FlightModel>()
         flights.inboundFlightModel.forEach {
-            if ((periodDay.parts.contains(it.period) || periodDay.parts[0] == "")
-                && (numberStops.number.contains(it.stops.toString()) || numberStops.number[0] == "")
+            if ((periodDay.parts.contains(it.period) || periodDay.parts.isEmpty())
+                && (numberStops.number.contains(it.stops.toString()) || numberStops.number.isEmpty())
             )
                 inboundFlightModelFiltered.add(it)
         }
 
         val outboundFlightModelFiltered = mutableListOf<FlightModel>()
         flights.outboundFlightModel.forEach {
-            if ((periodDay.parts.contains(it.period) || periodDay.parts[0] == "")
-                && (numberStops.number.contains(it.stops.toString()) || numberStops.number[0] == "")
+            if ((periodDay.parts.contains(it.period) || periodDay.parts.isEmpty())
+                && (numberStops.number.contains(it.stops.toString()) || numberStops.number.isEmpty())
             )
                 outboundFlightModelFiltered.add(it)
         }
