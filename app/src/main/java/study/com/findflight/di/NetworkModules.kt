@@ -9,8 +9,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import study.com.findflight.data.datasource.remote.FlightsDatasource
 import java.util.concurrent.TimeUnit
 
-const val SERVER_URL = "https://vcugj6hmt5.execute-api.us-east-1.amazonaws.com/"
-
 val networkModules = module {
 
     single<OkHttpClient> {
@@ -26,7 +24,8 @@ val networkModules = module {
 
     single<Retrofit> {
         Retrofit.Builder()
-            .baseUrl(SERVER_URL)
+            .baseUrl(getProperty("SERVER_BASE_URL",
+                "https://vcugj6hmt5.execute-api.us-east-1.amazonaws.com/"))
             .client(get())
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())

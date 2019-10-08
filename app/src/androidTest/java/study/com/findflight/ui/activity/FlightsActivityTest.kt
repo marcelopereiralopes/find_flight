@@ -2,6 +2,7 @@ package study.com.findflight.ui.activity
 
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -18,6 +19,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import study.com.findflight.R
 import study.com.findflight.resource.MockedFlightsForInterfaceTest
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import androidx.test.espresso.intent.Intents.intending
+import android.app.Activity
+import android.app.Instrumentation.ActivityResult
 
 
 @RunWith(AndroidJUnit4ClassRunner::class)
@@ -33,7 +40,7 @@ class FlightsActivityTest {
     @Throws(Exception::class)
     fun setUp() {
         server = MockWebServer()
-        server.start(8080)
+        server.start(8180)
     }
 
     @After
@@ -42,7 +49,7 @@ class FlightsActivityTest {
     }
 
     @Test
-    fun whenResultIsOk_shouldDisplayFlightListAndShowFAB() {
+    fun whenResultIsOk_shouldDisplayFlightListAndShowFilterButton() {
         server.enqueue(
             MockResponse()
                 .setResponseCode(200)
@@ -54,7 +61,7 @@ class FlightsActivityTest {
     }
 
     @Test
-    fun whenResultIsOk_butNotFoundFlights_shouldDisplayEmptyListMessageAndShowFAB() {
+    fun whenResultIsOk_butNotFoundFlights_shouldDisplayEmptyListMessageAndShowFilterButton() {
         server.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
         mActivityRule.launchActivity(Intent())
         onView(withId(R.id.fabFilter)).check(matches(isDisplayed()))
@@ -62,7 +69,7 @@ class FlightsActivityTest {
     }
 
     @Test
-    fun whenResultIsTimeout_shouldDisplayEmptyListMessageAndHideFAB() {
+    fun whenResultIsTimeout_shouldDisplayEmptyListMessageAndHideFilterButton() {
         server.enqueue(
             MockResponse()
                 .setResponseCode(408)
@@ -72,5 +79,17 @@ class FlightsActivityTest {
         mActivityRule.launchActivity(Intent())
         onView(withId(R.id.fabFilter)).check(matches(not(isDisplayed())))
         onView(allOf(withId(R.id.emptyListMessage), isDisplayed()))
+    }
+
+    @Test
+    fun whenDisplayFlightList_andClickOnFilterButton_shouldOpenFilterFlightsActivity() {
+        Intents.init()
+        whenResultIsOk_shouldDisplayFlightListAndShowFilterButton()
+        val matcher = hasComponent(FilterFlightsActivity::class.java.name)
+        val result = ActivityResult(Activity.RESULT_OK, null)
+        intending(matcher).respondWith(result)
+        onView(withId(R.id.fabFilter)).perform(click())
+        intended(matcher)
+        Intents.release()
     }
 }
