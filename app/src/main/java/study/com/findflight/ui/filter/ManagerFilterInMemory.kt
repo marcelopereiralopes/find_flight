@@ -1,6 +1,6 @@
 package study.com.findflight.ui.filter
 
-object ManagerFilter {
+object ManagerFilterInMemory {
 
     var periodDayFilter = PeriodDayFilter(mutableListOf())
     var numberStopsFilter = NumberStopsFilter(mutableListOf())

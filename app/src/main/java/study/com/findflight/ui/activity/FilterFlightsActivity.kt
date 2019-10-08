@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_filter_flights.*
 import kotlinx.android.synthetic.main.activity_flights.toolbar
 import study.com.findflight.R
-import study.com.findflight.ui.filter.ManagerFilter
+import study.com.findflight.ui.filter.ManagerFilterInMemory
 import study.com.findflight.util.NumberStopEnum
 import study.com.findflight.util.PeriodDayEnum
 import study.com.findflight.util.SortFlightEnum
@@ -33,7 +33,7 @@ class FilterFlightsActivity : AppCompatActivity() {
     }
 
     private fun configureLayout() {
-        val period = ManagerFilter.periodDayFilter.parts
+        val period = ManagerFilterInMemory.periodDayFilter.parts
         period.forEach {
             when (it) {
                 PeriodDayEnum.MORNING.period -> morningFlight.isChecked = true
@@ -43,7 +43,7 @@ class FilterFlightsActivity : AppCompatActivity() {
             }
         }
 
-        val stops = ManagerFilter.numberStopsFilter.number
+        val stops = ManagerFilterInMemory.numberStopsFilter.number
         stops.forEach {
             when (it) {
                 NumberStopEnum.ZERO.value -> directFlight.isChecked = true
@@ -51,7 +51,7 @@ class FilterFlightsActivity : AppCompatActivity() {
             }
         }
 
-        val sortBy = ManagerFilter.sortByPrice.value
+        val sortBy = ManagerFilterInMemory.sortByPrice.value
         sortBy.let {
             when (it) {
                 SortFlightEnum.BIGGESTPRICE.name -> biggestPrice.isChecked = true
@@ -75,18 +75,18 @@ class FilterFlightsActivity : AppCompatActivity() {
         if (directFlight.isChecked) updateNumberStops.add(NumberStopEnum.ZERO.value)
         if (oneStopFlight.isChecked) updateNumberStops.add(NumberStopEnum.ONE.value)
 
-        ManagerFilter.periodDayFilter.parts = updatePeriodDay
-        ManagerFilter.numberStopsFilter.number = updateNumberStops
+        ManagerFilterInMemory.periodDayFilter.parts = updatePeriodDay
+        ManagerFilterInMemory.numberStopsFilter.number = updateNumberStops
 
         when (radioGroupSort.checkedRadioButtonId) {
             R.id.biggestPrice -> {
-                ManagerFilter.sortByPrice.value = SortFlightEnum.BIGGESTPRICE.name
+                ManagerFilterInMemory.sortByPrice.value = SortFlightEnum.BIGGESTPRICE.name
             }
             R.id.lowestPrice -> {
-                ManagerFilter.sortByPrice.value = SortFlightEnum.LOWESTPRICE.name
+                ManagerFilterInMemory.sortByPrice.value = SortFlightEnum.LOWESTPRICE.name
             }
             R.id.lowestTimeAndPrice -> {
-                ManagerFilter.sortByPrice.value = SortFlightEnum.LOWESTPRICEANDTIME.name
+                ManagerFilterInMemory.sortByPrice.value = SortFlightEnum.LOWESTPRICEANDTIME.name
             }
         }
 

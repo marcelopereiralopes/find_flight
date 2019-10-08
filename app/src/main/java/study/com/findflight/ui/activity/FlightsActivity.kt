@@ -12,7 +12,7 @@ import study.com.findflight.R
 import study.com.findflight.ui.ErrorState
 import study.com.findflight.ui.SuccessState
 import study.com.findflight.ui.adapter.ViewPagerAdapter
-import study.com.findflight.ui.filter.ManagerFilter
+import study.com.findflight.ui.filter.ManagerFilterInMemory
 import study.com.findflight.ui.fragment.InboundFlightsFragment
 import study.com.findflight.ui.fragment.OutboundFlightsFragment
 import study.com.findflight.ui.viewmodel.FlightsViewModel
@@ -68,10 +68,10 @@ class FlightsActivity : AppCompatActivity() {
                 viewModel.filterSortFlight(
                     Pair(
                         listOf(
-                            ManagerFilter.periodDayFilter,
-                            ManagerFilter.numberStopsFilter
+                            ManagerFilterInMemory.periodDayFilter,
+                            ManagerFilterInMemory.numberStopsFilter
                         ),
-                        ManagerFilter.sortByPrice
+                        ManagerFilterInMemory.sortByPrice
                     )
                 )
             }
