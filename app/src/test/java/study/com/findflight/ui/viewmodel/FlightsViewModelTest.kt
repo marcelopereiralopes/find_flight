@@ -17,8 +17,7 @@ import study.com.findflight.data.repository.FlightsRepository
 import study.com.findflight.ui.ErrorState
 import study.com.findflight.ui.State
 import study.com.findflight.ui.SuccessState
-import study.com.findflight.ui.filter.NumberStopsFilter
-import study.com.findflight.ui.filter.PeriodDayFilter
+import study.com.findflight.ui.filter.Filter
 import study.com.findflight.ui.filter.SortByPrice
 import study.com.findflight.ui.viewmodel.resource.MockedFlightsForUnitTest.flightsMockList
 import study.com.findflight.ui.viewmodel.resource.MockedFlightsForUnitTest.flightsMockListWithNightPeriod
@@ -93,8 +92,8 @@ internal class FlightsViewModelTest {
             viewModel.filterSortFlight(
                 Pair(
                     listOf(
-                        PeriodDayFilter(mutableListOf()),
-                        NumberStopsFilter(mutableListOf())
+                        Filter.PeriodDayFilter(mutableListOf()),
+                        Filter.NumberStopsFilter(mutableListOf())
                     ),
                     SortByPrice(SortFlightEnum.LOWESTPRICE.name)
                 )
@@ -126,8 +125,8 @@ internal class FlightsViewModelTest {
             viewModel.filterSortFlight(
                 Pair(
                     listOf(
-                        PeriodDayFilter(mutableListOf()),
-                        NumberStopsFilter(mutableListOf())
+                        Filter.PeriodDayFilter(mutableListOf()),
+                        Filter.NumberStopsFilter(mutableListOf())
                     ),
                     SortByPrice(SortFlightEnum.BIGGESTPRICE.name)
                 )
@@ -160,8 +159,8 @@ internal class FlightsViewModelTest {
             viewModel.filterSortFlight(
                 Pair(
                     listOf(
-                        PeriodDayFilter(mutableListOf(PeriodDayEnum.NIGHT.period)),
-                        NumberStopsFilter(mutableListOf(NumberStopEnum.ONE.value))
+                        Filter.PeriodDayFilter(mutableListOf(PeriodDayEnum.NIGHT.period)),
+                        Filter.NumberStopsFilter(mutableListOf(NumberStopEnum.ONE.value))
                     ),
                     SortByPrice(SortFlightEnum.LOWESTPRICE.name)
                 )
