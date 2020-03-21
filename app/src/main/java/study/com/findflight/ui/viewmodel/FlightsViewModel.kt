@@ -47,8 +47,8 @@ class FlightsViewModel(private val repository: FlightsRepository,
         val listFilter = pair.first
         val sortByPrice = pair.second
 
-        val periodDay: PeriodDayFilter = listFilter[0] as PeriodDayFilter
-        val numberStops: NumberStopsFilter = listFilter[1] as NumberStopsFilter
+        val periodDay: Filter.PeriodDayFilter = listFilter[0] as Filter.PeriodDayFilter
+        val numberStops: Filter.NumberStopsFilter = listFilter[1] as Filter.NumberStopsFilter
 
         val flightsFiltered = MutableLiveData<State>()
 
